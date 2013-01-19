@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=TOR tp
+Comment=Redirige a Tor tutto il traffico del pc in maniera trasparente
+Icon=apport
+Exec=/usr/local/bin/tortp.sh
+Path=
+Terminal=true
+StartupNotify=false

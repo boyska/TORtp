@@ -1,0 +1,139 @@
+#!/bin/bash
+#
+# TORtp
+# freepto: https://we.riseup.net/avana/cryptopen
+
+clear
+
+# Root non dovrebbe...
+if [ "$(id -u)" = "0" ]; then
+   notify-send TORtp "Non puoi eseguire lo script come root" -i apport
+   exit 1
+fi
+
+export LRED="\e[1;31m"
+export LGREEN="\e[1;32m"
+export Z="\e[0m"
+
+echo '
+   _____ ___  ____    _
+  |_   _/ _ \|  _ \  | |_ _ __
+    | || | | | |_) | | __|  _ \
+    | || |_| |  _ <  | |_| |_) |
+    |_| \___/|_| \_\  \__|  __/
+                         |_|'
+echo -e "$LGREEN TOR Transparent Proxy $Z"
+echo ""
+echo "Redirige in maniera trasparente tutto il traffico TCP ed UDP (dns)"
+echo "generato dal tuo pc verso la rete TOR."
+echo ""
+echo -e "$LRED ATTENZIONE: $Z"
+echo ""
+echo "Dopo aver avviato TORtp assicurati che TOR stia funzionando visitando"
+echo "questa pagina:"
+echo ""
+echo "https://check.torproject.org"
+echo ""
+
+# Detect current user
+user=`id -un`
+
+[ -d /home/$user/.tortp ] || mkdir /home/$user/.tortp
+
+SELECTION="start stop reset exit"
+
+select options in $SELECTION; do
+if [ "$options" = "start" ]; then
+
+	# Check
+	if [[ -e /home/$user/.tortp/iptables.backup ]] && [[ -e /home/$user/.tortp/resolv.conf.backup ]];then
+		notify-send TORtp "Il servizio e' gia' attivo" -i apport
+                exit 1
+
+	elif [[ -e /home/$user/.tortp/iptables.backup ]] && [[ ! -e /home/$user/.tortp/resolv.conf.backup ]];then
+		echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+		gksudo iptables-restore < /home/$user/.tortp/iptables.backup
+        	sudo rm /home/$user/.tortp/iptables.backup
+		notify-send TORtp "Il servizio non è stato chiuso correttamente. Sto riavviando TORtp" -i apport
+
+	elif [[ ! -e /home/$user/.tortp/iptables.backup ]] && [[ -e /home/$user/.tortp/resolv.conf.backup ]];then
+		gksudo iptables -F
+	        sudo iptables -X
+       		sudo iptables -t nat -F
+        	sudo iptables -t nat -X
+	        sudo iptables-restore < /home/$user/.tortp/iptables.backup
+	        sudo rm /home/$user/.tortp/iptables.backup
+		notify-send TORtp "Il servizio non è stato chiuso correttamente. Sto riavviando TORtp" -i apport
+        fi
+
+	# Start TOR
+	if [ ! -e /var/run/tor/tor.pid ]; then
+        	gksudo /etc/init.d/tor start &>/dev/null
+	fi
+
+	# Change DNS server
+	if [ ! -e /home/$user/.tortp/resolv.conf.backup ];then
+	gksudo cp /etc/resolv.conf /home/$user/.tortp/resolv.conf.backup
+	fi
+	echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf > /dev/null
+	notify-send TORtp "DNS modificato" -i apport
+
+	# Iptables backup
+	if [ ! -e /home/$user/.tortp/iptables.backup ];then
+	sudo iptables-save > /home/$user/.tortp/iptables.backup
+	fi
+
+	# Delete all Iptables rules
+	sudo iptables -F
+	sudo iptables -X
+	sudo iptables -t nat -F
+	sudo iptables -t nat -X
+
+	# Redirec all DNS traffic trought TOR
+	sudo iptables -t nat -A OUTPUT -p udp -m owner --uid-owner $user -m udp --dport 53 -j REDIRECT --to-ports 53
+	sudo iptables -t filter -A OUTPUT -p udp -m owner --uid-owner $user -m udp --dport 53 -j ACCEPT
+
+	# Rediret all traffic throught TOR
+	sudo iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner $user -m tcp -j REDIRECT --to-ports 9040
+	sudo iptables -t filter -A OUTPUT -p tcp -m owner --uid-owner $user -m tcp --dport 9040 -j ACCEPT
+	sudo iptables -t filter -A OUTPUT -m owner --uid-owner $user -j DROP
+	notify-send TORtp "IPtables modificato" -i apport
+
+	# Check my new IP address
+	curl -s http://ipecho.net/plain | xargs -0 notify-send "Il tuo nuovo indirizzo IP" --icon apport
+
+elif [ "$options" = "stop" ]; then
+
+	# Restore DNS server backup
+	sudo rm /etc/resolv.conf
+	sudo cp /home/$user/.tortp/resolv.conf.backup /etc/resolv.conf
+	sudo rm /home/$user/.tortp/resolv.conf.backup
+
+	# Delete all Iptables rules
+	sudo iptables -F
+	sudo iptables -X
+	sudo iptables -t nat -F
+	sudo iptables -t nat -X
+
+	# Restore Iptables backup
+	sudo iptables-restore < /home/$user/.tortp/iptables.backup
+	sudo rm /home/$user/.tortp/iptables.backup
+	exit 0
+
+elif [ "$options" = "exit" ]; then
+
+	exit 0
+
+elif [ "$options" = "reset" ]; then
+
+	sudo iptables -F
+	sudo iptables -X
+	sudo iptables -t nat -F
+	sudo iptables -t nat -X
+	sudo rm -rf /home/$user/.tortp/*
+	echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+
+else
+	echo "Seleziona una delle opzioni"
+fi
+done
