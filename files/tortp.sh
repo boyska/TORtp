@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # TORtp
-# freepto: https://we.riseup.net/avana/cryptopen
+# freepto cryptopen: https://we.riseup.net/avana/cryptopen
 
 clear
 
