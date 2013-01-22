@@ -47,7 +47,6 @@ if [ "$options" = "start" ]; then
 	# Check
 	if [[ -e /home/$user/.tortp/iptables.backup ]] && [[ -e /home/$user/.tortp/resolv.conf.backup ]];then
 		notify-send TORtp "Il servizio e' gia' attivo" -i /usr/share/pixmaps/anonymous.ico
-                exit 1
 
 	elif [[ -e /home/$user/.tortp/iptables.backup ]] && [[ ! -e /home/$user/.tortp/resolv.conf.backup ]];then
 		echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
