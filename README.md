@@ -10,11 +10,11 @@ want users to know their traffic is being sent through a proxy. These problems c
 redirect outbound connections into a transparent proxy, so named because its presence is intended to be invisible to clients." 
 [read more: https://trac.torproject.org/projects/tor/wiki/doc/TransparentProxy]
 
-TORtp is a easy way to implement Tor Transparent Proxy in your (debian/xubuntu) GNU/Linux Box.
+TORtp is a easy way to implement Tor Transparent Proxy in your (debian/ubuntu) GNU/Linux Box.
 
-# How does it works:
+# How it works:
 
-TORtp add custom TOR configuration file (/etc/tor/torrc) with integrate Tor's transparent functionality and add custom IPtables rules for redirect all outgoing 
+TORtp add custom Tor configuration file (/etc/tor/torrc) with integrate Tor's transparent functionality and DNSport and add custom IPtables rules for redirect all outgoing 
 traffic on Tor Netwokr.
 
 # Required software:
