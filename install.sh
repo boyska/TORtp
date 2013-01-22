@@ -2,7 +2,7 @@
 
 # TORtp
 user=`id -un`
-sudo apt-get install tor -y
+sudo apt-get install tor curl -y
 
 # add custom torrc config file:
 sudo cp ./files/torrc /etc/tor/
