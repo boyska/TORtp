@@ -103,7 +103,7 @@ if [ "$options" = "start" ]; then
 elif [ "$options" = "stop" ]; then
 
 	# Restore DNS server backup
-	sudo rm /etc/resolv.conf
+	gksudo rm /etc/resolv.conf
 	sudo cp /home/$user/.tortp/resolv.conf.backup /etc/resolv.conf
 	sudo rm /home/$user/.tortp/resolv.conf.backup
 
@@ -125,7 +125,7 @@ elif [ "$options" = "exit" ]; then
 
 elif [ "$options" = "reset" ]; then
 
-	sudo iptables -F
+	gksudo iptables -F
 	sudo iptables -X
 	sudo iptables -t nat -F
 	sudo iptables -t nat -X
