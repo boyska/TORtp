@@ -117,6 +117,7 @@ elif [ "$options" = "stop" ]; then
 	# Restore Iptables backup
 	sudo iptables-restore < /home/$user/.tortp/iptables.backup
 	sudo rm /home/$user/.tortp/iptables.backup
+	notify-send TORtp "TOR Transparent Proxy disattivato" -i /usr/share/pixmaps/anonymous.ico
 	exit 0
 
 elif [ "$options" = "exit" ]; then
@@ -131,7 +132,7 @@ elif [ "$options" = "reset" ]; then
 	sudo iptables -t nat -X
 	sudo rm -rf /home/$user/.tortp/*
 	echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
-
+	notify-send TORtp "Connettività ripristinata" -i /usr/share/pixmaps/anonymous.ico
 else
 	echo "Seleziona una delle opzioni"
 fi
