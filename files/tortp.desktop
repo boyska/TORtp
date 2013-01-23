@@ -1,10 +1,10 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=TOR tp
+Name=TORtp
 Comment=Redirige a TOR tutto il traffico in uscita dal PC in maniera trasparente
 Icon=anonymous.ico
-Exec=/usr/local/bin/tortp.sh
+Exec=/usr/local/bin/tortp
 Path=
 Terminal=true
 StartupNotify=false

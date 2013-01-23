@@ -13,7 +13,7 @@ sudo cp ./files/anonymous.ico /usr/share/pixmaps/
 chown -R $user:$user /home/$user/.local/share/applications/tortp.desktop
 
 # tortp script:
-sudo cp ./files/tortp.sh /usr/local/bin/
+sudo cp ./files/tortp /usr/local/bin/
 
 # send notify
 notify-send TORtp "Installazione avvenuta con successo, avvia TORtp dal menu" -i /usr/share/pixmaps/anonymous.ico

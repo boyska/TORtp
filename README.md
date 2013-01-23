@@ -14,13 +14,13 @@ TORtp is a easy way to implement Tor Transparent Proxy in your (debian/ubuntu) G
 
 # How it works:
 
-TORtp add custom Tor configuration file (/etc/tor/torrc) with integrate Tor's transparent functionality and add custom IPtables rules for redirect all outgoing 
-traffic on Tor Netwokr.
+TORtp add custom Tor configuration file (/etc/tor/torrc) with integrate DNSport and Tor's transparent functionality. 
+On start TORtp add custom IPtables rules for redirect all outgoing traffic on Tor Network.
 
 # Required software:
 
- * iptables 1.3.5 or later
- * Tor 0.2.0.1-alpha or later
+* iptables 1.3.5 or later
+* Tor 0.2.0.1-alpha or later
 
 # Installation:
 
