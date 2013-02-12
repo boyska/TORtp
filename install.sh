@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Check user:
+if [ "$(id -u)" = "0" ]; then
+   echo "Non puoi eseguire lo script come root"
+   exit 1
+else
+   user=`id -un`
+fi
+
 # TORtp
 user=`id -un`
 sudo apt-get install tor curl -y
