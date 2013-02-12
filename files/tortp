@@ -98,7 +98,9 @@ if [ "$options" = "start" ]; then
 	notify-send TORtp "IPtables modificato" -i /usr/share/pixmaps/anonymous.ico
 
 	# Check my new IP address
-	curl -s http://ipecho.net/plain | xargs -0 notify-send "Il tuo nuovo indirizzo IP" -i /usr/share/pixmaps/anonymous.ico
+	notify-send TORtp "TOR si sta connettendo alla rete..." -i /usr/share/pixmaps/anonymous.ico
+	sleep 10s
+	curl -s http://ipecho.net/plain | xargs -0 notify-send "TORtp attivo. Il tuo nuovo indirizzo IP:" -i /usr/share/pixmaps/anonymous.ico
 
 elif [ "$options" = "stop" ]; then
 
