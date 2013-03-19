@@ -1,12 +1,18 @@
 #!/bin/bash
 
-# Check user:
+# check user:
 if [ "$(id -u)" = "0" ]; then
    echo "Non puoi eseguire lo script come root"
    exit 1
 else
    user=`id -un`
 fi
+
+# store user password
+sudo -k
+echo 'Scrivi la tua password (non verrà visualizzata) e premi enter:'
+read -s password
+echo $password | sudo -v -S
 
 # TORtp
 user=`id -un`
@@ -25,3 +31,5 @@ sudo cp ./files/tortp /usr/local/bin/
 
 # send notify
 notify-send TORtp "Installazione avvenuta con successo, avvia TORtp dal menu" -i /usr/share/pixmaps/anonymous.ico
+
+sudo -k

@@ -187,18 +187,8 @@
 ## address manually to your friends, uncomment this line:
 #PublishServerDescriptor 0
 
-################ Local settings TORtp #####################
-
-## Torified DNS
-DNSPort 53
-AutomapHostsOnResolve 1
-AutomapHostsSuffixes .exit,.onion
-
-## Transparent Proxy
+######### TORtp
 VirtualAddrNetwork 10.192.0.0/10
+AutomapHostsOnResolve 1
 TransPort 9040
-TransListenAddress 127.0.0.1
-
-## Misc
-AvoidDiskWrites 1
-WarnUnsafeSocks 1
+DNSPort 53
