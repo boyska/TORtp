@@ -47,6 +47,11 @@ echo ""
 
 SELECTION="start stop reset exit"
 
+# store user password:
+echo 'Scrivi la tua password (non verrà visualizzata) e premi enter:'
+read -s password
+echo $password | sudo -v -S $>/dev/null
+
 select options in $SELECTION; do
  if [ "$options" = "start" ]; then
 
@@ -120,15 +125,15 @@ select options in $SELECTION; do
 
  elif [ "$options" = "stop" ]; then
 
-	if [[ ! -e $home_user/.tortp/iptables.backup ]] && [[ ! -e $home_user/.tortp/resolv.conf.backup ]];then
+	if [[ ! -e $home/.tortp/iptables.backup ]] && [[ ! -e $home/.tortp/resolv.conf.backup ]];then
 	notify-send TORtp "TOR Transparent Proxy non è stato attivato" -i /usr/share/pixmaps/anonymous.ico
 	exit 0
 	fi
 
 	# Restore DNS server backup
 	sudo rm /etc/resolv.conf
-	sudo cp $home_user/.tortp/resolv.conf.backup /etc/resolv.conf
-	sudo rm $home_user/.tortp/resolv.conf.backup
+	sudo cp $home/.tortp/resolv.conf.backup /etc/resolv.conf
+	sudo rm $home/.tortp/resolv.conf.backup
 
 	# Delete all Iptables rules
 	sudo iptables -F
@@ -137,8 +142,8 @@ select options in $SELECTION; do
 	sudo iptables -t nat -X
 
 	# Restore Iptables backup
-	sudo iptables-restore < $home_user/.tortp/iptables.backup
-	sudo rm $home_user/.tortp/iptables.backup
+	sudo iptables-restore < $home/.tortp/iptables.backup
+	sudo rm $home/.tortp/iptables.backup
 	notify-send TORtp "TOR Transparent Proxy disattivato" -i /usr/share/pixmaps/anonymous.ico
 	exit 0
 
@@ -152,7 +157,7 @@ select options in $SELECTION; do
 	sudo iptables -X
 	sudo iptables -t nat -F
 	sudo iptables -t nat -X
-	sudo rm -rf $home_user/.tortp/*
+	sudo rm -rf $home/.tortp/*
 	echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
 	notify-send TORtp "Connettività ripristinata" -i /usr/share/pixmaps/anonymous.ico
  else
