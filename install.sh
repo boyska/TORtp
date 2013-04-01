@@ -20,6 +20,7 @@ sudo apt-get install tor curl -y
 
 # add custom torrc config file:
 sudo cp ./files/torrc /etc/tor/
+sudo /etc/init.d/tor restart
 
 # add custom xfce-menu's entry:
 cp ./files/tortp.desktop /home/$user/.local/share/applications/
