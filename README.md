@@ -14,7 +14,7 @@ TORtp is a easy way to implement Tor Transparent Proxy in your (debian/ubuntu) G
 
 # How it works:
 
-TORtp add custom Tor configuration file (/etc/tor/torrc) with integrate DNSport and Tor's transparent functionality. 
+TORtp add custom Tor configuration file (/etc/tor/torrc) with integrate DNSport and Tor's transparent proxy functionality.
 On start TORtp add custom IPtables rules for redirect all outgoing traffic on Tor Network.
 
 # Required software:
