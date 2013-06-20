@@ -92,6 +92,7 @@ if [ "$options" = "start" ]; then
 	# Redirec all DNS traffic trought TOR
 	sudo iptables -t nat -A OUTPUT ! -o lo -p udp -m owner --uid-owner $user -m udp --dport 53 -j REDIRECT --to-ports 53
 	sudo iptables -t filter -A OUTPUT -p udp -m owner --uid-owner $user -m udp --dport 53 -j ACCEPT
+	sudo iptables -t filter -A OUTPUT -p tcp -m owner --uid-owner $user -m tcp --dport 53 -j ACCEPT
 
 	# Rediret all traffic throught TOR
 	sudo iptables -t nat -A OUTPUT ! -o lo -p tcp -m owner --uid-owner $user -m tcp -j REDIRECT --to-ports 9040
@@ -105,7 +106,7 @@ if [ "$options" = "start" ]; then
 
 	# Check my new IP address
 	notify-send TORtp "TOR si sta connettendo alla rete..." -i /usr/share/pixmaps/anonymous.ico
-	sleep 10s
+	sleep 15
 	curl -s http://ipecho.net/plain | xargs -0 notify-send "TORtp attivo. Il tuo nuovo indirizzo IP:" -i /usr/share/pixmaps/anonymous.ico
 
 elif [ "$options" = "stop" ]; then
@@ -138,7 +139,7 @@ elif [ "$options" = "exit" ]; then
 
 elif [ "$options" = "reset" ]; then
 
-	sudo 'iptables -F'
+	sudo iptables -F
 	sudo iptables -X
 	sudo iptables -t nat -F
 	sudo iptables -t nat -X
