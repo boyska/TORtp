@@ -21,6 +21,7 @@ On start, TORtp add custom IPtables rules for redirect all outgoing traffic on T
 
 * iptables 1.3.5 or later
 * Tor 0.2.0.1-alpha or later
+* curl
 
 # Installation:
 
